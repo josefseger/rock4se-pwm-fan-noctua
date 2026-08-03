@@ -1,0 +1,16 @@
+MIT License
+
+Copyright (c) 2026 Josef Seger
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of the documentation, configuration files, Dockerfile, and shell scripts in
+this repository, to deal in those materials without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of those materials.
+
+The precompiled file rock4se-pwmctl is distributed for use with this Home
+Assistant app. Its original source code is not included in version 1.1.2 and
+the executable is therefore not covered by the MIT grant above.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED.

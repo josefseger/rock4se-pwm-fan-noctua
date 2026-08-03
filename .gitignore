@@ -1,0 +1,8 @@
+.DS_Store
+*.log
+*.tmp
+options.json
+app-info-*.txt
+container-inspect.json
+docker-history.txt
+run-numbered.txt
