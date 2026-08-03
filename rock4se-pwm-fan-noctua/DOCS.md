@@ -48,3 +48,15 @@ unrelated hardware.
 
 Verify fan voltage, ground, PWM wiring, and electrical compatibility before
 starting the app.
+
+## Tachometer wiring
+
+Connect the Noctua green tachometer wire to ROCK 4 SE physical pin 3.
+
+- Physical pin 3: GPIO2_A7
+- Linux GPIO number: 71
+- Character device mapping: `/dev/gpiochip2`, line offset 7
+- Board pull-up: 4.7 kΩ to 3.0 V
+- Fan tachometer: two pulses per revolution
+
+The add-on publishes `Fan RPM` and `Tachometer Status` through MQTT Discovery.
