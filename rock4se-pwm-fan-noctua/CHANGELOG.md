@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+- Added branded Home Assistant `icon.png` in the same tropical ROCK 4 SE visual style as the Ethernet LED Fix app.
+- Added branded Home Assistant `logo.png` with a Noctua-inspired brown/beige fan treatment.
+- No PWM control, tachometer, MQTT, or GPIO behavior changed.
+
 ## 0.2.0
 
 - Added Noctua tachometer reading on ROCK 4 SE physical pin 3.
