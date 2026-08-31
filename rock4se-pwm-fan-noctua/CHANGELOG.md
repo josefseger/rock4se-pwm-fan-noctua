@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0
+
+- Added configurable five-temperature / six-speed fan curve in the Home Assistant add-on configuration.
+- Changed the default minimum fan speed from 25% to 10%.
+- Changed the default first fan level from 25% to 10% below 40 °C.
+- Preserved the existing remaining default curve: 35% from 40 °C, 50% from 50 °C, 70% from 60 °C, 85% from 70 °C, and 100% from 80 °C.
+- Added startup validation requiring temperature thresholds to be strictly increasing.
+- Preserved the existing 100% startup fail-safe and invalid-temperature fail-safe behavior.
+- No PWM hardware access, tachometer, GPIO, thermal-sensor detection, or MQTT Discovery behavior changed.
+
 ## 0.2.1
 
 - Added branded Home Assistant `icon.png` in the same tropical ROCK 4 SE visual style as the Ethernet LED Fix app.
