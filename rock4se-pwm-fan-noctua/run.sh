@@ -15,6 +15,17 @@ json_number() {
 
 POLL_SECONDS="$(json_number poll_seconds)"
 MIN_SPEED="$(json_number min_speed)"
+TEMP_LEVEL_1="$(json_number temp_level_1)"
+SPEED_LEVEL_1="$(json_number speed_level_1)"
+TEMP_LEVEL_2="$(json_number temp_level_2)"
+SPEED_LEVEL_2="$(json_number speed_level_2)"
+TEMP_LEVEL_3="$(json_number temp_level_3)"
+SPEED_LEVEL_3="$(json_number speed_level_3)"
+TEMP_LEVEL_4="$(json_number temp_level_4)"
+SPEED_LEVEL_4="$(json_number speed_level_4)"
+TEMP_LEVEL_5="$(json_number temp_level_5)"
+SPEED_LEVEL_5="$(json_number speed_level_5)"
+SPEED_LEVEL_6="$(json_number speed_level_6)"
 TACH_WINDOW_SECONDS="$(json_number tach_window_seconds)"
 MQTT_HOST="$(json_string mqtt_host)"
 MQTT_PORT="$(json_number mqtt_port)"
@@ -22,7 +33,18 @@ MQTT_USER="$(json_string mqtt_user)"
 MQTT_PASSWORD="$(json_string mqtt_password)"
 
 POLL_SECONDS="${POLL_SECONDS:-5}"
-MIN_SPEED="${MIN_SPEED:-25}"
+MIN_SPEED="${MIN_SPEED:-10}"
+TEMP_LEVEL_1="${TEMP_LEVEL_1:-40}"
+SPEED_LEVEL_1="${SPEED_LEVEL_1:-10}"
+TEMP_LEVEL_2="${TEMP_LEVEL_2:-50}"
+SPEED_LEVEL_2="${SPEED_LEVEL_2:-35}"
+TEMP_LEVEL_3="${TEMP_LEVEL_3:-60}"
+SPEED_LEVEL_3="${SPEED_LEVEL_3:-50}"
+TEMP_LEVEL_4="${TEMP_LEVEL_4:-70}"
+SPEED_LEVEL_4="${SPEED_LEVEL_4:-70}"
+TEMP_LEVEL_5="${TEMP_LEVEL_5:-80}"
+SPEED_LEVEL_5="${SPEED_LEVEL_5:-85}"
+SPEED_LEVEL_6="${SPEED_LEVEL_6:-100}"
 TACH_WINDOW_SECONDS="${TACH_WINDOW_SECONDS:-2}"
 MQTT_HOST="${MQTT_HOST:-core-mosquitto}"
 MQTT_PORT="${MQTT_PORT:-1883}"
@@ -59,6 +81,14 @@ shutdown() {
 }
 trap shutdown INT TERM
 
+if [ "$TEMP_LEVEL_1" -ge "$TEMP_LEVEL_2" ] || \
+   [ "$TEMP_LEVEL_2" -ge "$TEMP_LEVEL_3" ] || \
+   [ "$TEMP_LEVEL_3" -ge "$TEMP_LEVEL_4" ] || \
+   [ "$TEMP_LEVEL_4" -ge "$TEMP_LEVEL_5" ]; then
+  log "FATAL: Temperature levels must be strictly increasing: $TEMP_LEVEL_1 < $TEMP_LEVEL_2 < $TEMP_LEVEL_3 < $TEMP_LEVEL_4 < $TEMP_LEVEL_5"
+  exit 1
+fi
+
 [ -r /dev/mem ] && [ -w /dev/mem ] || {
   log "FATAL: /dev/mem not available read/write"
   exit 1
@@ -94,6 +124,7 @@ log "Temperature sensor: $TEMP_TYPE"
 log "Temperature file: $TEMP_FILE"
 log "MQTT: $MQTT_HOST:$MQTT_PORT"
 log "PWM access: /dev/mem with verified cold-start initialization"
+log "Fan curve: <${TEMP_LEVEL_1}C=${SPEED_LEVEL_1}%, <${TEMP_LEVEL_2}C=${SPEED_LEVEL_2}%, <${TEMP_LEVEL_3}C=${SPEED_LEVEL_3}%, <${TEMP_LEVEL_4}C=${SPEED_LEVEL_4}%, <${TEMP_LEVEL_5}C=${SPEED_LEVEL_5}%, >=${TEMP_LEVEL_5}C=${SPEED_LEVEL_6}% (minimum ${MIN_SPEED}%)"
 
 [ -c /dev/gpiochip2 ] || {
   log "FATAL: /dev/gpiochip2 is not available; cannot read physical pin 3"
@@ -138,12 +169,12 @@ while true; do
     TEMP="$RAW"
   fi
 
-  if [ "$TEMP" -lt 40 ]; then SPEED=25
-  elif [ "$TEMP" -lt 50 ]; then SPEED=35
-  elif [ "$TEMP" -lt 60 ]; then SPEED=50
-  elif [ "$TEMP" -lt 70 ]; then SPEED=70
-  elif [ "$TEMP" -lt 80 ]; then SPEED=85
-  else SPEED=100
+  if [ "$TEMP" -lt "$TEMP_LEVEL_1" ]; then SPEED="$SPEED_LEVEL_1"
+  elif [ "$TEMP" -lt "$TEMP_LEVEL_2" ]; then SPEED="$SPEED_LEVEL_2"
+  elif [ "$TEMP" -lt "$TEMP_LEVEL_3" ]; then SPEED="$SPEED_LEVEL_3"
+  elif [ "$TEMP" -lt "$TEMP_LEVEL_4" ]; then SPEED="$SPEED_LEVEL_4"
+  elif [ "$TEMP" -lt "$TEMP_LEVEL_5" ]; then SPEED="$SPEED_LEVEL_5"
+  else SPEED="$SPEED_LEVEL_6"
   fi
 
   [ "$SPEED" -ge "$MIN_SPEED" ] || SPEED="$MIN_SPEED"
