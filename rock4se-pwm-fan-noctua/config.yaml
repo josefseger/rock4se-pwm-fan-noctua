@@ -1,5 +1,5 @@
 name: ROCK 4SE Noctua PWM Fan
-version: "0.3.0"
+version: "0.3.1"
 slug: rock4se_noctua_pwm_fan
 description: Temperature-controlled Noctua NF-A4x20 5V PWM fan for Radxa ROCK 4SE
 url: https://github.com/josefseger/rock4se-pwm-fan-noctua
