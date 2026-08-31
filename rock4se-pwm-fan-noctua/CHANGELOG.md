@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1
+
+- Confirmed the repository default minimum fan speed is 10%.
+- Documented that Home Assistant preserves existing saved add-on options during upgrades, so an older saved `min_speed` value can remain after updating until the user changes it.
+- No fan-curve logic, PWM hardware access, tachometer, GPIO, thermal-sensor detection, MQTT Discovery, or fail-safe behavior changed.
+
 ## 0.3.0
 
 - Added configurable five-temperature / six-speed fan curve in the Home Assistant add-on configuration.
