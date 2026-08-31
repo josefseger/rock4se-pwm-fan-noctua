@@ -1,5 +1,5 @@
 name: ROCK 4SE Noctua PWM Fan
-version: "0.2.1"
+version: "0.3.0"
 slug: rock4se_noctua_pwm_fan
 description: Temperature-controlled Noctua NF-A4x20 5V PWM fan for Radxa ROCK 4SE
 url: https://github.com/josefseger/rock4se-pwm-fan-noctua
@@ -17,7 +17,18 @@ privileged:
   - SYS_RAWIO
 options:
   poll_seconds: 5
-  min_speed: 25
+  min_speed: 10
+  temp_level_1: 40
+  speed_level_1: 10
+  temp_level_2: 50
+  speed_level_2: 35
+  temp_level_3: 60
+  speed_level_3: 50
+  temp_level_4: 70
+  speed_level_4: 70
+  temp_level_5: 80
+  speed_level_5: 85
+  speed_level_6: 100
   tach_window_seconds: 2
   mqtt_host: core-mosquitto
   mqtt_port: 1883
@@ -26,6 +37,17 @@ options:
 schema:
   poll_seconds: int(2,60)
   min_speed: int(0,100)
+  temp_level_1: int(0,120)
+  speed_level_1: int(0,100)
+  temp_level_2: int(0,120)
+  speed_level_2: int(0,100)
+  temp_level_3: int(0,120)
+  speed_level_3: int(0,100)
+  temp_level_4: int(0,120)
+  speed_level_4: int(0,100)
+  temp_level_5: int(0,120)
+  speed_level_5: int(0,100)
+  speed_level_6: int(0,100)
   tach_window_seconds: int(1,10)
   mqtt_host: str
   mqtt_port: port
