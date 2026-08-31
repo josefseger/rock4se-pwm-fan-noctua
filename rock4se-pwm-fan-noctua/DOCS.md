@@ -17,9 +17,39 @@ PWM hardware registers.
 
 Number of seconds between temperature checks.
 
+Default: `5` seconds.
+
 ### min_speed
 
-Minimum PWM fan speed in percent.
+Absolute minimum PWM fan speed in percent. If any configured fan level is lower
+than this value, `min_speed` wins.
+
+Default: `10` percent.
+
+### Configurable fan curve
+
+The fan curve consists of five temperature thresholds and six speed levels.
+The defaults are:
+
+- Below `temp_level_1` (`40 °C`): `speed_level_1` = `10%`
+- From `40 °C` to below `temp_level_2` (`50 °C`): `speed_level_2` = `35%`
+- From `50 °C` to below `temp_level_3` (`60 °C`): `speed_level_3` = `50%`
+- From `60 °C` to below `temp_level_4` (`70 °C`): `speed_level_4` = `70%`
+- From `70 °C` to below `temp_level_5` (`80 °C`): `speed_level_5` = `85%`
+- At or above `80 °C`: `speed_level_6` = `100%`
+
+The temperature thresholds must be strictly increasing:
+
+`temp_level_1 < temp_level_2 < temp_level_3 < temp_level_4 < temp_level_5`
+
+If they are not strictly increasing, the add-on exits with a fatal configuration
+error instead of running with an ambiguous fan curve.
+
+### tach_window_seconds
+
+Number of seconds used for each tachometer RPM measurement window.
+
+Default: `2` seconds.
 
 ### mqtt_host
 
@@ -38,6 +68,13 @@ MQTT username.
 ### mqtt_password
 
 MQTT password.
+
+## Safety behavior
+
+On startup, the PWM controller is initialized at `100%` as a fail-safe before
+the normal temperature-controlled loop begins.
+
+If the temperature reading is invalid, the fan is also forced to `100%`.
 
 ## Hardware warning
 
