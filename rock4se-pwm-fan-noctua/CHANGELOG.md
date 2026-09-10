@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.2
+
+- Fixed the low-level PWM controller mismatch that caused the app to exit when a configured fan speed below 25% was requested.
+- The low-level controller now accepts non-zero fan speeds from 10% through 100%; explicit 0% remains supported.
+- Added the RK3399 PWM controller source as `pwmctl.c` so the implementation is auditable and versioned with the app.
+- The Docker image now builds `rock4se-pwmctl` from `pwmctl.c` instead of copying the stale precompiled binary.
+- Preserved the verified PWM0 base address, register offsets, 1931-tick period, control value `0x13`, cold-start initialization sequence, safety checks, readback verification, and nearest-integer duty calculation.
+- Repository default `min_speed` and first fan level remain 10%.
+- No fan-curve selection logic, tachometer, GPIO, thermal-sensor detection, MQTT Discovery, or invalid-temperature fail-safe behavior changed.
+
 ## 0.3.1
 
 - Confirmed the repository default minimum fan speed is 10%.
